@@ -44,12 +44,12 @@ int main(){
         }
     }
 
-    for(int i = 0 ; i<N; i++){
-        for(int j = 0 ; j<M; j++){
-            printf("%d ", input[i][j]);
-        }
-        puts("");
-    }
+    // for(int i = 0 ; i<N; i++){
+    //     for(int j = 0 ; j<M; j++){
+    //         printf("%d ", input[i][j]);
+    //     }
+    //     puts("");
+    // }
 
     for(int i = 0 ; i<N; i++){
         for(int j = 0 ; j<M; j++){
@@ -59,11 +59,11 @@ int main(){
         }
     }
 
-    while(!PQ.empty()){
-        Edge temp = PQ.top();
-        PQ.pop();
-        printf("%d %d %d\n", temp.s, temp.e, temp.v);
-    }
+    // while(!PQ.empty()){
+    //     Edge temp = PQ.top();
+    //     PQ.pop();
+    //     printf("%d %d %d\n", temp.s, temp.e, temp.v);
+    // }
     for(int i = 1; i<cnt ; i++){
         Parent[i] = i;
     }
@@ -112,7 +112,12 @@ void getBridge(int x, int y){
             int length = 0;
             int i = x;
             int j = y;
+            bool flag = false;
             while(j<M-1){
+                if(j!= y && input[i][j] == input[x][y]){
+                    flag = true;
+                    break;
+                }
                 if(input[i][j] !=0 && input[i][j] != input[x][y]){
                     break;
                 }else{
@@ -120,7 +125,7 @@ void getBridge(int x, int y){
                     length++;
                 }
             }
-            if(length > 2 && input[i][j]){
+            if(!flag && length > 2 && input[i][j]){
                 PQ.push(Edge{input[x][y], input[i][j], length-1});
             }
         }
@@ -132,7 +137,12 @@ void getBridge(int x, int y){
             int length = 0;
             int i = x;
             int j = y;
+            bool flag = false;
             while(i<N-1){
+                if(i!= x && input[i][j] == input[x][y]){
+                    flag = true;
+                    break;
+                }
                 if(input[i][j] !=0 && input[i][j] != input[x][y]){
                     break;
                 }else{
@@ -140,11 +150,61 @@ void getBridge(int x, int y){
                     length++;
                 }
             }
-            if(length > 2 && input[i][j]){
+            if(!flag && length > 2 && input[i][j]){
                 PQ.push(Edge{input[x][y], input[i][j], length-1});
             }
         }
     }
+    //왼쪽
+    if(y != 0){
+        if(input[x][y-1] == 0 && input[x][y-1] != input[x][y]){
+            int length = 0;
+            int i = x;
+            int j = y;
+            bool flag = false;
+            while(j>0){
+                if(j!= y && input[i][j] == input[x][y]){
+                    flag = true;
+                    break;
+                }
+                if(input[i][j] !=0 && input[i][j] != input[x][y]){
+                    break;
+                }else{
+                    j--;
+                    length++;
+                }
+            }
+            if(!flag && length > 2 && input[i][j]){
+                PQ.push(Edge{input[x][y], input[i][j], length-1});
+            }
+        }
+    }
+    
+    //위
+    if(x != 0){
+        if(input[x-1][y] == 0 && input[x-1][y] != input[x][y]){
+            int length = 0;
+            int i = x;
+            int j = y;
+            bool flag = false;
+            while(i>0){
+                if(i!= y && input[i][j] == input[x][y]){
+                    flag = true;
+                    break;
+                }
+                if(input[i][j] !=0 && input[i][j] != input[x][y]){
+                    break;
+                }else{
+                    i--;
+                    length++;
+                }
+            }
+            if(!flag && length > 2 && input[i][j]){
+                PQ.push(Edge{input[x][y], input[i][j], length-1});
+            }
+        }
+    }
+
 }
 
 void matchParent(int a, int b){
@@ -169,3 +229,5 @@ int findParent(int temp){
 // 0 0 0 0 0 1 1 0
 // 0 0 0 0 0 0 0 0
 // 1 1 1 1 1 1 1 1
+
+
